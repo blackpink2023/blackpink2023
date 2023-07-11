@@ -1,0 +1,289 @@
+<!-- saved from url=(0108)https://static.ticketbox.vn/dist-canary-bp/tkbvn/html/spa/ticket-booking/views/step-select-tickets.html?4349 -->
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+   </head>
+   <body>
+      <div ng-if="isBinding.value" style="min-height: 318px; background-color: #e8e8e8; position: absolute; width: 100%; z-index: 9; height: 100%; opacity: .9;">
+         <style type="text/css">
+            .card-right-block {
+            width: 50px;
+            text-align: right;
+            }
+            .loading-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #eee;
+            background-color: rgba(238, 238, 238, 0.9);
+            z-index: 100;
+            }
+            .loading-main {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            }
+            .loading-spinner {
+            position: relative;
+            }
+            .loading-spinner:before, .loading-spinner:after {
+            content: '';
+            position: relative;
+            display: block;
+            }
+            .loading-spinner:before {
+            -webkit-animation: spinner 2.5s cubic-bezier(0.75, 0, 0.5, 1) infinite normal;
+            animation: spinner 2.5s cubic-bezier(0.75, 0, 0.5, 1) infinite normal;
+            width: 60px;
+            height: 60px;
+            background-color: #9FCA51;
+            background-image: url({{staticDomain}}/site/global/content/img/ticketbox-logo.png?v1);
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            border-radius: 8px;
+            }
+            .loading-spinner:after {
+            -webkit-animation: shadow 2.5s cubic-bezier(0.75, 0, 0.5, 1) infinite normal;
+            animation: shadow 2.5s cubic-bezier(0.75, 0, 0.5, 1) infinite normal;
+            bottom: -.5em;
+            height: 7px;
+            border-radius: 50%;
+            background-color: #bbb;
+            }
+            @keyframes spinner {
+            50% {
+            border-radius: 50%;
+            -webkit-transform: scale(0.5) rotate(360deg);
+            -ms-transform: scale(0.5) rotate(360deg);
+            transform: scale(0.5) rotate(360deg);
+            }
+            100% {
+            -webkit-transform: scale(1) rotate(720deg);
+            -ms-transform: scale(1) rotate(720deg);
+            transform: scale(1) rotate(720deg);
+            }
+            }
+            @-webkit-keyframes spinner {
+            50% {
+            -webkit-transform: rotate(360deg);
+            -ms-transform: rotate(360deg);
+            transform: rotate(360deg);
+            }
+            100% {
+            -webkit-transform: scale(1) rotate(720deg);
+            -ms-transform: scale(1) rotate(720deg);
+            transform: scale(1) rotate(720deg);
+            }
+            }
+            @keyframes shadow {
+            50% {
+            -webkit-transform: scale(0.5);
+            -ms-transform: scale(0.5);
+            transform: scale(0.5);
+            border-color: #e4e4e4;
+            }
+            }
+            @-webkit-keyframes shadow {
+            50% {
+            -webkit-transform: scale(0.5);
+            -ms-transform: scale(0.5);
+            transform: scale(0.5);
+            border-color: #e4e4e4;
+            }
+            }
+         </style>
+      </div>
+      <div class="container color-6">
+         <div class="row" ng-class="{&#39;margin-top-0 margin-bottom-0&#39;: isWidget || isMobile, &#39;widget-show-selection&#39;: widgetShowSelectionRequired }">
+            <div ng-if="event.currentShowing.displayTicketTypeGroups &amp;&amp; event.currentShowing.displayTicketTypeGroups.length &gt; 0" class="col-md-8">
+               <ul class="group-ticket">
+                  <li ng-if="!event.isHideAllGroup" ng-click="selectTicketTypeGroup(null)" ng-class="{ active: global.selectedTicketTypeGroupId == null}"><span translate="T.STEP_SELECT_TICKETS.ALL_TICKET_TYPE"></span></li>
+                  <li ng-click="selectTicketTypeGroup(ttg.id)" ng-repeat="ttg in event.currentShowing.displayTicketTypeGroups" ng-class="{ active: ttg.id == global.selectedTicketTypeGroupId }">{{ttg.name}}</li>
+               </ul>
+            </div>
+            <div class="col-xs-12">
+               <div ng-if="isWidget &amp;&amp; event.showings.length &gt; 1" class="w-100">
+                  <div class="custome-select cs1-inp-select select-date">
+                     <span class="before-icon ello-calendar"></span>
+                     <select class="w-100" onchange="openLink(this.value);">
+                        <option ng-if="widgetShowSelectionRequired" translate="T.STEP_SELECT_TICKETS.PLEASE_SELECT_A_DATE"></option>
+                        <option ng-selected="!widgetShowSelectionRequired &amp;&amp; showing.id == event.currentShowing.id" ng-repeat="showing in event.showings | orderBy:&#39;startTime&#39;" value="/ticket-booking/{{event.id}}/widget/{{showing.id}}?colorscheme={{themeType}}">{{showing.startTime | date:'EEEE, d MMMM yyyy, h:mm a'}} {{showing.soldOut ? '(SOLD OUT)' : ''}}</option>
+                     </select>
+                  </div>
+               </div>
+               <div class="row booking">
+                  <div ng-if="hasSeatMap" class="clearfix">
+                     <div class="container seat-states" ng-class="{&#39;margin-bottom-0&#39;: isWidget}">
+                        <div class="helper-text" ng-class="{&#39;helper-text-wg&#39;: isWidget}"><span translate="T.STEP_SELECT_SEAT.SEAT_TYPE_INTRO"></span></div>
+                        <div class="color-status" ng-class="{&#39;helper-text-wg&#39;: isWidget}">
+                           <div class="circle inline-block color-available" ng-class="{&#39;circle-wg&#39;: isWidget}"></div>
+                           <span class="font-600" translate="T.STEP_SELECT_SEAT.AVAILABLE_SEAT"></span>
+                        </div>
+                        <div class="color-status" ng-class="{&#39;helper-text-wg&#39;: isWidget}">
+                           <div class="circle inline-block color-selected" ng-class="{&#39;circle-wg&#39;: isWidget}"></div>
+                           <span class="font-600" translate="T.STEP_SELECT_SEAT.SELECTED_SEAT"></span>
+                        </div>
+                        <div class="color-status" ng-class="{&#39;helper-text-wg&#39;: isWidget}">
+                           <div class="circle inline-block color-unavailable" ng-class="{&#39;circle-wg&#39;: isWidget}"></div>
+                           <span class="font-600" translate="T.STEP_SELECT_SEAT.BOOKED_SEAT"></span>
+                        </div>
+                        <div class="color-status" ng-class="{&#39;helper-text-wg&#39;: isWidget}">
+                           <div class="circle inline-block color-locked" ng-class="{&#39;circle-wg&#39;: isWidget}"></div>
+                           <span class="font-600" translate="T.STEP_SELECT_SEAT.LOCKED_SEAT"></span>
+                        </div>
+                     </div>
+                  </div>
+                  <div ng-if="!hasSeatMap" ng-class="{&#39;col-xs-12&#39;: isWidget, &#39;col-md-8&#39; : !isWidget }" id="ticket-type-list">
+                     <div class="w-100">
+                        <div class="w-100 text-right" ng-if="validationError.noTicketSelected"><span class="error-message error-top font-085 rounded" translate="T.STEP_SELECT_TICKETS.ERROR.PLEASE_SELECT_TICKET"></span></div>
+                        <div class="block-header">
+                           <div class="col-xs-8 col-sm-6">
+                              <div class="row">
+                                 <h5 class="font-bold uppercase" translate="T.STEP_SELECT_TICKETS.TICKET_TYPE"></h5>
+                              </div>
+                           </div>
+                           <div class="col-sm-3 hidden-xs">
+                              <h5 class="font-bold uppercase text-right" translate="T.STEP_SELECT_TICKETS.UNIT_PRICE"></h5>
+                           </div>
+                           <div class="col-xs-4 col-sm-3">
+                              <div class="row">
+                                 <h5 class="font-bold uppercase text-right" translate="T.STEP_SELECT_TICKETS.QUANTITY"></h5>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="a-ticket w-100 clearfix" ng-repeat="ticketType in event.currentShowing.ticketTypes | filter:{isHiddenFromListing:false} | orderBy:&#39;displayOrder&#39;" ng-class="{&#39;no-border&#39;: ticketType.description}" ng-show="global.selectedTicketTypeGroupId == null || global.currentGroupTicketTypeIds.length == 0 || global.currentGroupTicketTypeIds.indexOf(ticketType.id) != -1">
+                           <div class="row">
+                              <div class="w-100 clearfix table">
+                                 <div class="col-xs-8 col-sm-6 relative table-cell">
+                                    <div class="ticket-title" ng-bind="ticketType.title"></div>
+                                    <div class="visible-xs">
+                                       <span ng-class="{&#39;color-red&#39;: ticketType.applyingPrice &lt; ticketType.originalPrice}"><span ng-bind="ticketType.applyingPrice | number"></span> <span ng-bind="event.currency.isoCode"></span></span>
+                                       <div ng-if="ticketType.applyingPrice &lt; ticketType.originalPrice"><small class="color-9 line-through">&nbsp;<span ng-bind="ticketType.originalPrice | number"></span> <span ng-bind="event.currency.isoCode"></span> &nbsp;</small></div>
+                                    </div>
+                                 </div>
+                                 <div class="col-sm-3 text-right table-cell hidden-xs">
+                                    <span ng-class="{&#39;color-red&#39;: ticketType.applyingPrice &lt; ticketType.originalPrice}"><span ng-bind="ticketType.applyingPrice | number"></span> <span ng-bind="event.currency.isoCode"></span></span>
+                                    <div ng-if="ticketType.applyingPrice &lt; ticketType.originalPrice"><small class="color-9 line-through">&nbsp;<span ng-bind="ticketType.originalPrice | number"></span> <span ng-bind="event.currency.isoCode"></span> &nbsp;</small></div>
+                                 </div>
+                                 <div class="col-xs-4 col-sm-3 text-right table-cell">
+                                    <div ng-if="ticketType.isSoldOut" class="color-red font-bold" translate="T.STEP_SELECT_TICKETS.TICKET_STATUS.SOLD_OUT"></div>
+                                    <div ng-if="!ticketType.isSoldOut &amp;&amp; !ticketType.isClosed &amp;&amp; ticketType.currentPrice == 0 &amp;&amp; !ticketType.isAvailable" translate="T.STEP_SELECT_TICKETS.TICKET_STATUS.NOT_OPEN_FORREGISTER_YET"></div>
+                                    <div ng-if="!ticketType.isSoldOut &amp;&amp; !ticketType.isClosed &amp;&amp; ticketType.currentPrice != 0 &amp;&amp; !ticketType.isAvailable" translate="T.STEP_SELECT_TICKETS.TICKET_STATUS.NOT_SOLD_YET"></div>
+                                    <div ng-if="!ticketType.isSoldOut &amp;&amp; ticketType.isClosed &amp;&amp; ticketType.currentPrice != 0 &amp;&amp; !ticketType.isAvailable" class="color-red font-bold" translate="T.STEP_SELECT_TICKETS.TICKET_STATUS.SALES_CLOSED"></div>
+                                    <div ng-if="!ticketType.isSoldOut &amp;&amp; ticketType.isClosed &amp;&amp; ticketType.currentPrice == 0 &amp;&amp; !ticketType.isAvailable" class="color-red font-bold" translate="T.STEP_SELECT_TICKETS.TICKET_STATUS.REGISTRATION_CLOSED"></div>
+                                    <div ng-if="!ticketType.isSoldOut &amp;&amp; !ticketType.isClosed &amp;&amp; ticketType.isAvailable" class="btn-group select-quantity pull-right" dropdown="">
+                                       <div class="quantity-booking">
+                                          <div class="input-group"><span class="input-group-btn"><button ng-click="decreaseTicketQuantity(ticketType)" type="button" class="btn btn-default" ng-class="{&#39;disabled&#39;: ticketType.selectedQuantity &lt;= 0}"><span class="ello-minus-1"></span></button></span> <input disabled="" pattern="[0-9]*" ng-model="ticketType.selectedQuantity" class="form-control text-center" type="number" min="{{ticketType.minTixPerOrder}}" max="{{ticketType.maxTixPerOrder}}"> <span class="input-group-btn"><button ng-click="increaseTicketQuantity(ticketType)" type="button" class="btn btn-default" ng-class="{&#39;disabled&#39;: ticketType.selectedQuantity &gt;= ticketType.maxTixPerOrder}"><span class="ello-plus-1"></span></button></span></div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div ng-if="ticketType.imageUrl || ticketType.description" class="col-sm-12 clearfix">
+                                 <div class="rounded ticket-detail color-6 clearfix">
+                                    <div class="padding-10 col-xs-8 col-sm-9 ticket-description table" ng-class="{&#39;type2&#39;: ticketType.imageUrl}">
+                                       <div ng-if="ticketType.description" class="table-cell ticket-des-icon"><i class="ello-info-circled-1 color-9"></i></div>
+                                       <div ng-if="ticketType.imageUrl" class="table-cell ticket-image"><img ng-src="{{ticketType.imageUrl}}" ng-class="{&#39;no-des&#39;: !ticketType.description}"></div>
+                                       <div ng-if="ticketType.description" ng-bind-html="ticketType.descriptionHtml" class="table-cell color-6 font-085"></div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div ng-if="hasSeatMap &amp;&amp; seatMap &amp;&amp; event &amp;&amp; order" ng-class="{&#39;col-xs-12&#39;: isWidget, &#39;col-md-8&#39; : !isWidget }">
+                     <div ng-controller="seatPickerController" id="seatpicker" class="seatpicker w-100" ng-class="{&#39;seatpicker&#39;: !isWidget}">
+                        <div class="ticket-types w-100 clearfix" ng-if="!isWidget">
+                           <div ng-class="{&#39;padding-bottom-0&#39;: isWidget}">
+                              <div class="row margin-0">
+                                 <div class="ticket-type" ng-repeat="ticketType in event.currentShowing.ticketTypes | filter:{isHiddenFromListing:false} | orderBy:&#39;displayOrder&#39;" ng-class="{&#39;col-sm-4&#39;: isWidget, &#39;col-sm-6&#39;: !isWidget}">
+                                    <table class="w-100">
+                                       <tbody class="w-100">
+                                          <tr>
+                                             <td width="30" ng-if="!isWidget">
+                                                <div ng-class="{&#39;padding-15&#39;: !isWidget, &#39;padding-7&#39;: isWidget}" style="background-color: #{{ticketType.color}};border: 1px solid #aaa;"></div>
+                                             </td>
+                                             <td width="10" ng-if="isWidget">
+                                                <div class="rounded" ng-class="{&#39;padding-15&#39;: !isWidget, &#39;padding-7&#39;: isWidget}" style="background-color: #{{ticketType.color}};border: 1px solid #aaa;"></div>
+                                             </td>
+                                             <td class="padding-15 padding-top-0 padding-bottom-0">
+                                                <div ng-bind="ticketType.title" class="font-600 color-6 clearfix"></div>
+                                                <span ng-class="{&#39;color-red&#39;: ticketType.applyingPrice &lt; ticketType.originalPrice}"><span ng-bind="ticketType.applyingPrice | number"></span> <span ng-bind="event.currency.isoCode"></span></span>
+                                                <div ng-if="ticketType.applyingPrice &lt; ticketType.originalPrice"><small class="color-9 line-through">&nbsp;<span ng-bind="ticketType.originalPrice | number"></span> <span ng-bind="event.currency.isoCode"></span> &nbsp;</small></div>
+                                             </td>
+                                             <td width="30" class="text-right"><span ng-if="ticketType.imageUrl || ticketType.description" class="inline-block ello-info-circled-1 color-9 input-group font-600" tooltip-html-unsafe="{{tooltipTickettInfo(ticketType.imageUrl,ticketType.description)}}" tooltip-trigger="mouseenter"></span></td>
+                                          </tr>
+                                       </tbody>
+                                    </table>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="w-100 clearfix">
+                           <div id="seatmap" class="seatmap w-100 relative bg-white rounded clearfix">
+                              <form name="quantityFrm" ng-class="{&#39;show&#39;: quantityBox.isShowing, &#39;hide&#39;: !quantityBox.isShowing }" class="ss-quan">
+                                 <div id="popoverQuantity" class="ss-quan-pp popover fade top in" style="display: block;">
+                                    <div class="arrow"></div>
+                                    <h3 class="popover-title">Select quantity for <strong ng-bind="quantityBox.ticketType.title"></strong></h3>
+                                    <div class="popover-content">
+                                       <div class="input-group"><span class="input-group-btn"><button ng-click="quantityBox.decrease()" type="button" class="btn btn-default" ng-class="{&#39;disabled&#39;: quantityBox.quantity &lt;= 0 }"><span class="ello-minus-1"></span></button></span> <input disabled="" pattern="[0-9]*" ng-model="quantityBox.quantity" ng-change="" name="quantity" class="form-control" type="number" min="0" max="{{quantityBox.maximum}}" style="text-align: center;"> <span class="input-group-btn"><button ng-click="quantityBox.increase()" type="button" class="btn btn-default" ng-class="{&#39;disabled&#39;: quantityBox.quantity &gt;= quantityBox.maximum}"><span class="ello-plus-1"></span></button></span></div>
+                                    </div>
+                                    <div class="popover-navigation"></div>
+                                 </div>
+                                 <div ng-click="hideQuantityBox()" class="ss-quan-bd"></div>
+                              </form>
+                              <div class="zoom-controller absolute" ng-class="{&#39;hidden-xs&#39;: !isWidget}">
+                                 <div class="controller" ng-click="seatpicker.zoomIn()"><span class="ello-plus-1"></span></div>
+                                 <div class="controller" ng-click="seatpicker.resetZoom()"><span class="ello-cw-1"></span></div>
+                                 <div class="controller" ng-click="seatpicker.zoomOut()"><span class="ello-minus-1"></span></div>
+                              </div>
+                              <svg id="svg" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1"></svg>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div ng-class="{&#39;col-xs-12&#39;: isWidget, &#39;col-md-4&#39; : !isWidget }" class="booking-right-bar overflow-hidden">
+                     <tkb-booking-bill class="hidden-xs hidden-sm" ng-if="!isWidget"></tkb-booking-bill>
+                     <div ng-if="event.hasDiscountCode" class="w-100">
+                        <div class="w-100" ng-class="{&#39;text-center&#39;: !isWidget, &#39;text-left padding-top-0 padding-bottom-0&#39;: isWidget}">
+                           <div class="w-100 padding-10"></div>
+                           <a ng-if="!showDiscountCodeBox" ng-click="toggleDiscountCodeBox()" class="color-3 underline enter-discount-code" translate="T.STEP_SELECT_TICKETS.ENTER_DISCOUNT_CODE"></a>
+                           <div ng-if="showDiscountCodeBox" class="relative form-group margin-bottom-0 discount-code-box" ng-class="{&#39;has-error&#39;: global.discountCodeError}">
+                              <a class="btn-close-discount color-6 absolute ello-cancel-2" ng-click="cancelDiscountCodeBox()"></a>
+                              <form class="input-group" ng-submit="applyDiscountCode()">
+                                 <input ng-blur="applyDiscountCode()" ng-disabled="global.discountCodeDisableInput" tabindex="1" class="form-control input-bg-white" type="text" placeholder="{{&#39;T.STEP_SELECT_TICKETS.DISCOUNT_CODE&#39; | translate}}" style="text-transform: uppercase;" ng-model="order.discount.discountCode">
+                                 <div tabindex="2" ng-disabled="global.discountCodeDisableInput" class="input-group-addon pointer bg-white font-600" ng-click="applyDiscountCode()" ladda="discountCodeSubmitting" data-style="zoom-out" translate="T.STEP_SELECT_TICKETS.APPLY"></div>
+                              </form>
+                              <div class="error-message error-bottom font-085 rounded" ng-if="global.discountCodeError" style="white-space: normal;">{{global.discountMsg}}</div>
+                              <div class="error-bottom font-085 rounded discount-valid-seats" ng-if="(global.discountCodeError == false) &amp;&amp; (global.discountCodeForSeatError == false)">{{global.discountMsg}}</div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="form-captcha">
+                        <div id="captcha-robot"></div>
+                        <div ng-if="isNotCaptcha" class="error-not-captcha" translate="T.STEP_SELECT_SEAT.PLEASE_CHOOSE_CAPTCHA"></div>
+                     </div>
+                     <div class="padding-10"></div>
+                     <div ng-if="!isBinding.value" class="center-block text-center table margin-bottom-0 valign-middle checkout-section" ng-class="{&#39;checkout-section-wg font-size-14&#39;: isWidget}">
+                        <div ng-if="isWidget" class="table-cell w-50 text-left"><strong ng-if="bookableStatus == EVENT_BOOKABLE_STATUS.Bookable"><span translate="T.LAYOUT.TOTAL"></span>: <span ng-bind="order.finalAmount || 0 | number"></span> <span ng-bind="event.currency.isoCode"></span></strong></div>
+                        <table tabindex="3" ng-click="submitTicketInfo()" ng-class="{&#39;table-cell pull-right&#39;: isWidget, &#39;big-btn w-100&#39;: !isWidget,&#39;disabled&#39;: bookableStatus != EVENT_BOOKABLE_STATUS.Bookable}" class="btn-rounded btn-next tkb-bg-color btn btn-primary center-block text-shadow-2 font-600">
+                           <tbody>
+                              <tr>
+                                 <td><span ng-class="{&#39;padding-10 padding-top-0 padding-bottom-0&#39;: isWidget || isMobile}" class="ladda-button" ladda="global.submitting" data-style="zoom-out"><span ng-if="bookableStatus == EVENT_BOOKABLE_STATUS.Bookable" translate="T.STEP_SELECT_TICKETS.NEXT"></span><span ng-if="bookableStatus == EVENT_BOOKABLE_STATUS.SoldOutAll" translate="T.LAYOUT.SOLD_OUT"></span><span ng-if="bookableStatus == EVENT_BOOKABLE_STATUS.ClosedAll" translate="T.LAYOUT.ONLINE_BOOKING_CLOSED"></span><span ng-if="bookableStatus == EVENT_BOOKABLE_STATUS.NotAvailable" translate="T.LAYOUT.BOOKING_NOT_AVAILABLE"></span></span></td>
+                              </tr>
+                           </tbody>
+                        </table>
+                        <div ng-if="!isWidget &amp;&amp; bookableStatus != EVENT_BOOKABLE_STATUS.Bookable" class="more-events"><a class="underline color-6 font-080" href="https://static.ticketbox.vn/events" translate="T.LAYOUT.MORE_EVENTS"></a></div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </body>
+</html>

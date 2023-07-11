@@ -1,0 +1,745 @@
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+  </head>
+  <body>
+    <form smooth-scroll="" name="form" novalidate="">
+      <div class="container color-6" id="informationForm">
+        <div class="row" ng-class="{&#39;margin-bottom-20 margin-top-10&#39;: isWidget}">
+          <div class="col-xs-12">
+            <div class="row booking">
+              <div ng-class="{&#39;col-xs-12&#39;: isWidget, &#39;col-md-8&#39; : !isWidget }">
+                <div id="buyer-info" class="w-100 clearfix">
+                  <div cl="" ass="block-header">
+                    <table class="w-100 valign-middle">
+                      <tbody>
+                        <tr>
+                          <td>
+                            <h5 class="font-bold uppercase">
+                              <span translate="T.STEP2.BUYER_INFO"></span>
+                            </h5>
+                          </td>
+                          <td width="24"></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="color-6">
+                    <div class="w-100 wrap type1 clearfix">
+                      <div class="w-100 ip-fullname overflow-hidden" ng-class="{&#39;vi-order&#39;: currentLangKey == &#39;vi&#39;,&#39;en-order&#39;: currentLangKey != &#39;vi&#39;}">
+                        <div class="col-sm-6 form-group ip-firstname frm-style" ng-class="{&#39;has-error&#39;: submitStep2Clicked &amp;&amp; form.firstName.$error.required}">
+                          <label>
+                            <span translate="T.STEP2.FIRST_NAME"></span>
+                            <span class="required-icon">*</span>
+                          </label>
+                          <input type="text" maxlength="250" name="firstName" ng-blur="autoSubmitBuyerInfo()" class="form-control input-bg-white frm-input-firstName" ng-model="order.buyerInfo.firstName" required="" tabindex="{{(currentLangKey == &#39;vi&#39; &amp;&amp; !isMobile) ? 2 : 1}}">
+                          <div ng-if="submitStep2Clicked &amp;&amp; form.firstName.$error.required" class="error-message error-bottom font-085 rounded" translate="T.STEP2.ERROR.FIRSTNAME_REQUIRED"></div>
+                        </div>
+                        <div class="col-sm-6 form-group ip-lastname frm-style" ng-class="{&#39;has-error&#39;: submitStep2Clicked &amp;&amp; form.lastName.$error.required}">
+                          <label>
+                            <span translate="T.STEP2.LAST_NAME"></span>
+                            <span class="required-icon">*</span>
+                          </label>
+                          <input type="text" maxlength="250" name="lastName" ng-blur="autoSubmitBuyerInfo()" class="form-control input-bg-white frm-input-lastName" ng-model="order.buyerInfo.lastName" required="" tabindex="{{(currentLangKey == &#39;vi&#39; &amp;&amp; !isMobile) ? 1 : 2}}">
+                          <div ng-if="submitStep2Clicked &amp;&amp; form.lastName.$error.required" class="error-message error-bottom font-085 rounded" translate="T.STEP2.ERROR.LASTNAME_REQUIRED"></div>
+                        </div>
+                      </div>
+                      <div class="w-100 overflow-hidden">
+                        <div class="col-sm-6 form-group frm-style" ng-class="{&#39;has-error&#39;: submitStep2Clicked &amp;&amp; (form.email.$error.required || invalidEmail || (invalidPhoneNumber &amp;&amp; browserWidth &gt; 767))}">
+                          <label>Email <span class="required-icon">*</span>
+                          </label>
+                          <input tabindex="3" type="email" maxlength="250" ng-blur="autoSubmitBuyerInfo()" name="email" class="form-control input-bg-white frm-input-email" ng-model="order.buyerInfo.email" required="" ng-class="{&#39;no-border-bottom&#39;: submitStep2Clicked &amp;&amp; ((!form.email.$error.required &amp;&amp; invalidEmail) || (!form.phoneNumber.$error.required &amp;&amp; invalidPhoneNumber &amp;&amp; browserWidth &gt; 767))}" ng-change="updateStastusEmail()">
+                          <div ng-if="submitStep2Clicked &amp;&amp; form.email.$error.required" class="error-message error-bottom font-085 rounded" ng-class="{&#39;invalid-message&#39;: !form.phoneNumber.$error.required &amp;&amp; invalidPhoneNumber &amp;&amp; browserWidth &gt; 767}" translate="T.STEP2.ERROR.EMAIL_REQUIRED"></div>
+                          <div ng-if="submitStep2Clicked &amp;&amp; !form.email.$error.required &amp;&amp; (invalidEmail || (!form.phoneNumber.$error.required &amp;&amp; invalidPhoneNumber &amp;&amp; browserWidth &gt; 767))" class="error-message invalid-message error-bottom font-085 rounded">
+                            <span ng-class="{&#39;invisible&#39;: !invalidEmail}" translate="T.STEP2.ERROR.INVALID_EMAIL"></span>
+                          </div>
+                        </div>
+                        <div class="col-sm-6 form-group frm-style" ng-class="{&#39;has-error&#39;: submitStep2Clicked &amp;&amp; (order.buyerInfo.email != confirmEmail || form.confirmEmail.$error.required || invalidEmail || (invalidPhoneNumber &amp;&amp; browserWidth &gt; 767))}">
+                          <label>
+                            <span translate="T.LAYOUT.EMAIL_CONFIRM"></span>
+                            <span class="required-icon">*</span>
+                          </label>
+                          <input id="confirmEmail" tabindex="3" type="email" maxlength="250" name="confirmEmail" class="form-control input-bg-white frm-input-email" ng-model="confirmEmail" ng-init="confirmEmail=order.buyerInfo.email" required="" ng-class="{&#39;no-border-bottom&#39;: submitStep2Clicked &amp;&amp; ((!form.confirmEmail.$error.required &amp;&amp; invalidEmail) || (!form.phoneNumber.$error.required &amp;&amp; invalidPhoneNumber &amp;&amp; browserWidth &gt; 767))}">
+                          <div ng-if="submitStep2Clicked &amp;&amp; !confirmEmail" class="error-message error-bottom font-085 rounded" ng-class="{&#39;invalid-message&#39;: !form.phoneNumber.$error.required &amp;&amp; invalidPhoneNumber &amp;&amp; browserWidth &gt; 767}" translate="T.STEP2.ERROR.EMAIL_REQUIRED"></div>
+                          <div style="bottom: -7px; z-index: 4" ng-if="submitStep2Clicked &amp;&amp; order.buyerInfo.email &amp;&amp; confirmEmail &amp;&amp; (order.buyerInfo.email != confirmEmail )" class="error-message error-bottom font-085 rounded" translate="T.STEP2.ERROR.INVALID_EMAIL_CONFIRM"></div>
+                        </div>
+                      </div>
+                      <div class="w-100 overflow-hidden">
+                        <div class="col-sm-6 form-group frm-style frm-input-phone" ng-class="{&#39;has-error&#39;: submitStep2Clicked &amp;&amp; (form.phoneNumber.$error.required || invalidPhoneNumber || (invalidEmail &amp;&amp; browserWidth &gt; 767))}">
+                          <label>
+                            <span translate="T.STEP2.PHONE_NUMBER"></span>
+                            <span class="required-icon">*</span>
+                          </label>
+                          <input tabindex="4" type="tel" maxlength="16" ng-blur="autoSubmitBuyerInfo()" name="phoneNumber" class="form-control input-bg-white frm-input-phoneNumber" ng-model="order.buyerInfo.phoneNumber" required="" ng-class="{&#39;no-border-bottom&#39;: submitStep2Clicked &amp;&amp; ((!form.phoneNumber.$error.required &amp;&amp; invalidPhoneNumber) || (!form.email.$error.required &amp;&amp; invalidEmail &amp;&amp; browserWidth &gt; 767))}" ng-change="updateStatusPhone()">
+                          <div ng-if="submitStep2Clicked &amp;&amp; form.phoneNumber.$error.required" class="error-message error-bottom font-085 rounded" translate="T.STEP2.ERROR.PHONE_REQUIRED" ng-class="{&#39;invalid-message&#39;: !form.email.$error.required &amp;&amp; invalidEmail &amp;&amp; browserWidth &gt; 767}"></div>
+                          <div ng-if="submitStep2Clicked &amp;&amp; !form.phoneNumber.$error.required &amp;&amp; (invalidPhoneNumber || (!form.email.$error.required &amp;&amp; invalidEmail &amp;&amp; browserWidth &gt; 767))" class="error-message invalid-message error-bottom font-085 rounded">
+                            <span ng-class="{&#39;invisible&#39;: !invalidPhoneNumber}" translate="T.STEP2.ERROR.INVALID_PHONE"></span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="payment-info" class="w-100 clearfix">
+                  <div class="block-header" ng-class="{&#39;has-error&#39;: submitStep2Clicked &amp;&amp; !order.paymentInfo.paymentType}">
+                    <h5 class="font-bold uppercase">
+                      <span translate="T.STEP2.PAYMENT_METHOD"></span>
+                    </h5>
+                    <div class="error-message error-right font-085 rounded" ng-if="submitStep2Clicked &amp;&amp; !order.paymentInfo.paymentType" translate="T.STEP2.ERROR.PLEASE_SELECT_PAYMENT_METHOD"></div>
+                  </div>
+                  <div class="row color-6 relative">
+                    <div class="w-100 relative">
+                      <div class="payments w-100 clearfix" ng-if="order.paymentInfo.paymentType == PAYMENT_TYPE.Free &amp;&amp; checkExistPaymentType(PAYMENT_TYPE.Free)">
+                        <div class="payment-method free col-sm-6 form-group active">
+                          <div class="wrapper">
+                            <div class="base-warning-tooltip input-group font-600">
+                              <div class="input-group-addon custom-radio relative h-100">
+                                <div class="radio-wrapper">
+                                  <div class="radio-inner"></div>
+                                </div>
+                                <div class="green-dot"></div>
+                                <span class="ello-paper-plane color-a"></span>
+                              </div>
+                              <div class="form-control bg-white color-6" ng-if="!event.isUsePickupFlowForFreeTickets &amp;&amp; !event.isReceiveTicketsAtEvent" translate="T.STEP2.FREE_RECEIVE_VIA_EMAIL"></div>
+                              <div class="form-control bg-white color-6 free-op" ng-if="event.isUsePickupFlowForFreeTickets" translate="T.STEP2.FREE_OP"></div>
+                              <div class="form-control bg-white color-6 free-op" ng-if="event.isReceiveTicketsAtEvent" translate="T.STEP2.FREE_PICKUP_AT_EVENT"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="payments w-100 clearfix" ng-if="order.paymentInfo.paymentType != PAYMENT_TYPE.Free">
+                        <div class="online payment-method-gr">
+                          <div class="online-method-title w-100 method-title" ng-class="{&#39;online-method-cus&#39;: (event.isAllowRefund &amp;&amp; !event.hasPhysicalItem)}">
+                            <span class="text-uppercase" ng-class="{&#39;break&#39;: (event.isAllowRefund &amp;&amp; !event.hasPhysicalItem)}" translate="T.STEP2.ONLINE_PAYMENT_METHOD"></span>
+                            <div ng-if="event.isAllowRefund &amp;&amp; !event.hasPhysicalItem" class="refund-note" translate="T.STEP2.ONLINE_REFUND_NOTE"></div>
+                            <div href="#onlinePaymentNote" class="online-payment-note inline-block color-9 input-group font-600" data-toggle="collapse" ng-click="openPaymentNote(&#39;online-payment-note&#39;)">
+                              <span class="ello-info-circled-1"></span>
+                            </div>
+                            <div ng-if="event.id === 86938">
+                              <a target="_blank" href="https://ticketbox.vn/promotion-terms-and-conditions" translate="T.LAYOUT.PAYMENT_WITH_VIETIN" style="font-weight: normal; font-style: italic; text-decoration-line: underline; color: #005992;"></a>
+                            </div>
+                            <div class="payment-note collapse" id="onlinePaymentNote" aria-expanded="false">
+                              <table class="w-100">
+                                <tbody class="w-100">
+                                  <tr ng-if="event.isAllowRefund &amp;&amp; !event.hasPhysicalItem">
+                                    <td class="note-item" translate="T.STEP2.PAYMENT_NOTE_2"></td>
+                                  </tr>
+                                  <tr ng-if="!event.isAllowRefund || event.hasPhysicalItem">
+                                    <td class="note-item" translate="T.STEP2.ONLINE_NOTE_3"></td>
+                                  </tr>
+                                  <tr class="note-content">
+                                    <td>
+                                      <div class="inline-block" ng-class="{&#39;w-100&#39;: (event.isAllowRefund &amp;&amp; !event.hasPhysicalItem), &#39;w-90&#39;: !(event.isAllowRefund &amp;&amp; !event.hasPhysicalItem)}">
+                                        <div class="text-center btm-25" ng-class="{&#39;col-sm-12&#39;: (event.hasPhysicalItem), &#39;col-sm-3&#39;: (!event.hasPhysicalItem &amp;&amp; event.isAllowRefund), &#39;col-sm-4&#39;: (!event.hasPhysicalItem &amp;&amp; !event.isAllowRefund)}">
+                                          <img class="w-100 payment-note-icon" ng-src="{{staticDomain + &#39;/site/global/content/img/payment_img1.png&#39;}}">
+                                          <p class="text-note" translate="T.STEP2.ONLINE_ADVANTAGE_1"></p>
+                                        </div>
+                                        <div ng-if="!event.hasPhysicalItem" class="text-center btm-25" ng-class="{&#39;col-sm-4&#39;: (!event.isAllowRefund), &#39;col-sm-3&#39;: (event.isAllowRefund)}">
+                                          <img class="w-100 payment-note-icon" ng-src="{{staticDomain + &#39;/site/global/content/img/payment_img2.png&#39;}}">
+                                          <p class="text-note" translate="T.STEP2.ONLINE_ADVANTAGE_2"></p>
+                                        </div>
+                                        <div ng-if="!event.hasPhysicalItem" class="text-center btm-25" ng-class="{&#39;col-sm-4&#39;: (!event.isAllowRefund), &#39;col-sm-3&#39;: (event.isAllowRefund)}">
+                                          <img class="w-100 payment-note-icon" ng-src="{{staticDomain + &#39;/site/global/content/img/payment_img3.png&#39;}}">
+                                          <p class="text-note" translate="T.STEP2.ONLINE_ADVANTAGE_3"></p>
+                                        </div>
+                                        <div ng-if="event.isAllowRefund &amp;&amp; !event.hasPhysicalItem" class="text-center btm-25" ng-class="{&#39;col-sm-4&#39;: (!event.isAllowRefund), &#39;col-sm-3&#39;: (event.isAllowRefund)}">
+                                          <img class="w-100 payment-note-icon" ng-src="{{staticDomain + &#39;/site/global/content/img/payment_img6.png&#39;}}">
+                                          <p class="text-note" translate="T.STEP2.ONLINE_REFUND"></p>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                          <div class="online-method">
+                            <!-- <div ng-if="checkExistPaymentType(PAYMENT_TYPE.InternetBanking)" tabindex="3" class="payment-method banking flex-order-2 col-sm-6 form-group" ng-click="enableInternerBanking &amp;&amp; selectPaymentType(PAYMENT_TYPE.InternetBanking)" ng-class="{&#39;active&#39;: (order.paymentInfo.paymentType == PAYMENT_TYPE.InternetBanking) &amp;&amp; enableInternerBanking, &#39;disabled&#39;: !event.paymentMethods.internetBanking || !enableInternerBanking}">
+                              <div class="wrapper ps-relative">
+                                <div ng-show="notBankSelected || isInternetBankingInterrupted" class="warning-tooltip custome-tooltip padding-10 rounded color-6 ps-absolute warning-payment-method-absolute">
+                                  <table class="w-100">
+                                    <tbody class="w-100">
+                                      <tr>
+                                        <td width="30">
+                                          <i class="ello-attention"></i>
+                                        </td>
+                                        <td>
+                                          <span ng-bind-html="messageAlertErrorInternetBanking"></span>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                                <div tooltip-html-unsafe="&lt;div class=&#39;warning-tooltip custome-tooltip padding-10 rounded color-6&#39;&gt;&lt;table class=&#39;w-100&#39;&gt;&lt;tbody class=&#39;w-100&#39;&gt;&lt;tr&gt;&lt;td width=&#39;20&#39;&gt;&lt;i class=&#39;ello-attention&#39;&gt;&lt;/i&gt;&lt;/td&gt;&lt;td&gt;{{&#39;T.STEP2.OPTION_NOT_AVAILABLE_FOR_THIS_EVENT&#39; | translate}}&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;" tooltip-trigger="mouseenter" class="base-warning-tooltip input-group font-600">
+                                  <div class="input-group-addon custom-radio relative h-100 btn-select-payment-ib">
+                                    <div class="radio-wrapper">
+                                      <div class="radio-inner"></div>
+                                    </div>
+                                    <div class="green-dot"></div>
+                                    <span>
+                                      <img class="icon-png" ng-src="{{staticDomain + &#39;/site/global/content/img/booking/bank.png&#39;}}">
+                                    </span>
+                                  </div>
+                                  <div class="form-control bg-white color-6" translate="T.STEP2.INTERNET_BANKING_SMARTLINK"></div>
+                                </div>
+                              </div>
+                            </div> -->
+
+                            <div ng-if="checkExistPaymentType(PAYMENT_TYPE.Momo)" tabindex="5" class="payment-method banking flex-order-4 col-sm-6 form-group new" ng-click="selectPaymentType(PAYMENT_TYPE.Momo)" ng-class="{&#39;active&#39;: order.paymentInfo.paymentType == PAYMENT_TYPE.Momo, &#39;disabled&#39;: !event.paymentMethods.momo}">
+                              <div class="wrapper ps-relative">
+                                <div ng-show="isMomoInterrupted" class="warning-tooltip custome-tooltip padding-10 rounded color-6 ps-absolute warning-payment-method-absolute">
+                                  <table class="w-100">
+                                    <tbody class="w-100">
+                                      <tr>
+                                        <td width="30">
+                                          <i class="ello-attention"></i>
+                                        </td>
+                                        <td>
+                                          <span translate="T.STEP2.PAYMENT_METHOD_INTERRUPTED"></span>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                                <div tooltip-html-unsafe="&lt;div class=&#39;warning-tooltip custome-tooltip padding-10 rounded color-6&#39;&gt;&lt;table class=&#39;w-100&#39;&gt;&lt;tbody class=&#39;w-100&#39;&gt;&lt;tr&gt;&lt;td width=&#39;20&#39;&gt;&lt;i class=&#39;ello-attention&#39;&gt;&lt;/i&gt;&lt;/td&gt;&lt;td&gt;{{&#39;T.STEP2.OPTION_NOT_AVAILABLE_FOR_THIS_EVENT&#39; | translate}}&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;" tooltip-trigger="mouseenter" class="base-warning-tooltip input-group font-600">
+                                  <div class="input-group-addon custom-radio relative h-100">
+                                    <div class="radio-wrapper">
+                                      <div class="radio-inner"></div>
+                                    </div>
+                                    <div class="green-dot"></div>
+                                    <span>
+                                      <img class="icon-png" ng-src="{{staticDomain + &#39;/site/global/content/img/booking/momo.png&#39;}}">
+                                    </span>
+                                  </div>
+                                   <div class="form-control bg-white color-6" translate="T.LAYOUT.MOMO_METHOD"></div> 
+                                  <!--<div class="form-control bg-white color-6" translate="T.LAYOUT.BANK_TRANSFER_PAYMENT"></div>-->
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-xs-12 bank-transfer-detail flex-order-11 payment-detail" collapse="order.paymentInfo.paymentType != PAYMENT_TYPE.Momo">
+                              <div class="method-detail caret-left bg-white w-100 padding-20 rounded clearfix">
+                                <ul class="ul-none-style" ng-if="!event.hasPhysicalItem">
+                                  <li>
+                                    <div class="padding-right-0 padding-bottom-0 padding-top-0 ng-binding">
+                                      <table class="valign-top">
+                                        <tbody>
+                                          <tr>
+                                            <td>
+                                                <!-- <p translate="T.STEP2.MOMO.ATTENTION"> -->
+                                              <p><strong>Lưu ý:</strong> Khi khách hàng thanh toán bằng chuyển khoản ngân hàng, xin vui lòng không tắt cửa sổ trình duyệt khi đang thanh toán. Vui lòng chờ đến khi có thông báo thành công.</p>
+
+                                            </td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  </li>
+                                </ul>
+                                <ul class="ul-none-style" ng-if="event.hasPhysicalItem">
+                                  <li>
+                                    <p style="margin-top: 16px; margin-bottom: 20px;">
+                                      <img style="width: 90px;" ng-src="{{staticDomain + &#39;/site/global/content/img/booking/momo-logo.png&#39;}}">
+                                    </p>
+                                    <p translate="T.STEP2.MOMO.ENTRY"></p>
+                                    <p>
+                                      <strong translate="T.STEP2.MOMO.DESCRIPTION_MANUAL"></strong>
+                                    </p>
+                                    <p translate="T.STEP2.MOMO.DESCRIPTION_STEP1" style="margin-bottom: 2px"></p>
+                                    <p translate="T.STEP2.MOMO.DESCRIPTION_STEP2" style="margin-bottom: 2px"></p>
+                                    <p translate="T.STEP2.MOMO.DESCRIPTION_STEP3" style="margin-bottom: 2px"></p>
+                                    <p style="margin-top: 20px; margin-bottom: 20px;" translate="T.STEP2.MOMO.HOTLINE"></p>
+                                    <p translate="T.STEP2.MOMO.WEBSITE"></p>
+                                  </li>
+                                  <li>
+                                    <hr>
+                                  </li>
+                                  <li>
+                                    <strong translate="T.STEP2.INTERNET_BANKING_SMARTLINK_DELIVERY_DESCRIPTION"></strong>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                            
+                            
+                            <div ng-if="checkExistPaymentType(PAYMENT_TYPE.BankTransfer)" tabindex="15" class="payment-method bank-transfer flex-order-5 col-sm-6 form-group" ng-click="selectPaymentType(PAYMENT_TYPE.BankTransfer)" ng-class="{&#39;active&#39;: order.paymentInfo.paymentType == PAYMENT_TYPE.BankTransfer, &#39;disabled&#39;: !event.paymentMethods.bankTransfer}">
+                              <div class="wrapper">
+                                <div tooltip-html-unsafe="&lt;div class=&#39;warning-tooltip custome-tooltip padding-10 rounded color-6&#39;&gt;&lt;table class=&#39;w-100&#39;&gt;&lt;tbody class=&#39;w-100&#39;&gt;&lt;tr&gt;&lt;td width=&#39;20&#39;&gt;&lt;i class=&#39;ello-attention&#39;&gt;&lt;/i&gt;&lt;/td&gt;&lt;td&gt;{{&#39;T.STEP2.OPTION_NOT_AVAILABLE_FOR_THIS_EVENT&#39; | translate}}&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;" tooltip-trigger="mouseenter" class="base-warning-tooltip input-group font-600">
+                                  <div class="input-group-addon custom-radio relative h-100 btn-select-payment-bt">
+                                    <div class="radio-wrapper">
+                                      <div class="radio-inner"></div>
+                                    </div>
+                                    <div class="green-dot"></div>
+                                    <span>
+                                      <img class="icon-png" ng-src="{{staticDomain + &#39;/site/global/content/img/booking/exchange.png&#39;}}">
+                                    </span>
+                                  </div>
+                                  <div class="form-control bg-white color-6" translate="T.LAYOUT.BANK_TRANSFER_PAYMENT"></div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-xs-12 bank-transfer-detail flex-order-7 payment-detail" collapse="order.paymentInfo.paymentType != PAYMENT_TYPE.BankTransfer">
+                              <div class="method-detail caret-right bg-white w-100 padding-20 rounded clearfix">
+                                <p translate="T.STEP2.BANKTRANSFER.DESCRIPTION"></p>
+                                <p class="dashed-line"></p>
+                                <p class="font-bold" translate="T.STEP2.BANKTRANSFER.STEPS"></p>
+                                <div class="padding-20 padding-right-0 padding-bottom-0 padding-top-0 ng-binding">
+                                  <table class="valign-top">
+                                    <tbody>
+                                      <tr>
+                                        <td>
+                                          <span translate="T.STEP2.BANKTRANSFER.STEP1"></span>:
+                                        </td>
+                                        <td>
+                                          <span translate="T.STEP2.BANKTRANSFER.STEP1_TEXT_PART1"></span>
+                                          <strong translate="T.STEP2.BANKTRANSFER.STEP1_TEXT_PART2"></strong>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td width="160">
+                                          <span translate="T.STEP2.BANKTRANSFER.STEP2"></span>:
+                                        </td>
+                                        <td>
+                                          <span translate="T.STEP2.BANKTRANSFER.STEP2_TEXT_PART1"></span>
+                                          <strong translate="T.STEP2.BANKTRANSFER.STEP2_TEXT_PART2"></strong>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td>
+                                          <span translate="T.STEP2.BANKTRANSFER.STEP3"></span>:
+                                        </td>
+                                        <td>
+                                          <span translate="T.STEP2.BANKTRANSFER.STEP3_TEXT"></span>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                                <div class="padding-5"></div>
+                                <p class="font-bold" translate="T.STEP2.BANKTRANSFER.BANK_INFO"></p>
+                                <div class="padding-20 padding-right-0 padding-bottom-0 padding-top-0 ng-binding">
+                                  <div class="w-100" translate="T.STEP2.BANKTRANSFER.BANKS.EIB.NAME"></div>
+                                  <div>
+                                    <span translate="T.STEP2.BANKTRANSFER.BANK_OWNER"></span>: &nbsp; <span translate="T.STEP2.BANKTRANSFER.BANKS.EIB.OWNER"></span>
+                                  </div>
+                                  <div class="w-100">
+                                    <span translate="T.STEP2.BANKTRANSFER.BANK_NUMBER"></span>: &nbsp; <span translate="T.STEP2.BANKTRANSFER.BANKS.EIB.NUMBER"></span>
+                                  </div>
+                                  <div class="w-100">
+                                    <span translate="T.STEP2.BANKTRANSFER.BANK_BRANCH"></span>: &nbsp; <span translate="T.STEP2.BANKTRANSFER.BANKS.EIB.BRANCH"></span>
+                                  </div>
+                                </div>
+                                <div class="padding-5"></div>
+                                <p class="font-bold" translate="Note"></p>
+                                <div class="padding-20 padding-right-0 padding-bottom-0 padding-top-0 ng-binding">
+                                  <table class="valign-top w-100">
+                                    <tbody>
+                                      <tr>
+                                        <td translate="T.STEP2.BANKTRANSFER.BANKTRANSFER_FEE"></td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            
+                          </div>
+                        </div>
+                        <div class="offline payment-method-gr" ng-if="event.paymentMethods.cashOnDelivery || event.paymentMethods.officePickup">
+                          <div class="offline-method-title w-100 method-title">
+                            <span class="text-uppercase" translate="T.STEP2.OFFLINE_PAYMENT_METHOD"></span>
+                            <div href="#offPaymentNote" class="offline-payment-note inline-block color-9 input-group font-600" data-toggle="collapse" ng-click="openPaymentNote(&#39;offline-payment-note&#39;)">
+                              <span class="ello-info-circled-1"></span>
+                            </div>
+                            <div class="payment-note collapse" id="offPaymentNote">
+                              <table class="w-100">
+                                <tbody class="w-100">
+                                  <tr>
+                                    <td class="note-item" translate="T.STEP2.PAYMENT_NOTE_1"></td>
+                                  </tr>
+                                  <tr class="note-content">
+                                    <td>
+                                      <div class="inline-block w-90">
+                                        <div class="col-sm-6 text-center btm-25">
+                                          <img class="w-100 payment-note-icon" ng-src="{{staticDomain + &#39;/site/global/content/img/payment_img5.png&#39;}}">
+                                          <p class="text-note" translate="T.STEP2.OFFLINE_ADVANTAGE_2"></p>
+                                        </div>
+                                        <div class="col-sm-6 text-center btm-25">
+                                          <img class="w-100 payment-note-icon" ng-src="{{staticDomain + &#39;/site/global/content/img/payment_img8.png&#39;}}">
+                                          <p class="text-note" translate="T.STEP2.OFFLINE_ADVANTAGE_3"></p>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                          <div class="offline-method">
+                            <div ng-if="checkExistPaymentType(PAYMENT_TYPE.COD) || event.paymentMethods.cashOnDelivery" tabindex="7" class="payment-method cod flex-order-5 col-sm-6 form-group" ng-click="selectPaymentType(PAYMENT_TYPE.COD)" ng-class="{&#39;active&#39;: order.paymentInfo.paymentType == PAYMENT_TYPE.COD, &#39;disabled&#39;: !event.paymentMethods.cashOnDelivery}">
+                              <div class="wrapper">
+                                <div tooltip-html-unsafe="&lt;div class=&#39;warning-tooltip custome-tooltip padding-10 rounded color-6&#39;&gt;&lt;table class=&#39;w-100&#39;&gt;&lt;tbody class=&#39;w-100&#39;&gt;&lt;tr&gt;&lt;td width=&#39;20&#39;&gt;&lt;i class=&#39;ello-attention&#39;&gt;&lt;/i&gt;&lt;/td&gt;&lt;td&gt;{{&#39;T.STEP2.COD_DISABLED_MESSAGE&#39; | translate}}&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;" tooltip-trigger="mouseenter" class="base-warning-tooltip input-group font-600">
+                                  <div class="input-group-addon relative h-100 btn-select-payment-cod">
+                                    <div class="custom-radio">
+                                      <div class="radio-wrapper">
+                                        <div class="radio-inner"></div>
+                                      </div>
+                                      <div class="green-dot"></div>
+                                    </div>
+                                    <span>
+                                      <img class="icon-png" ng-src="{{staticDomain + &#39;/site/global/content/img/booking/truck.png&#39;}}">
+                                    </span>
+                                  </div>
+                                  <div class="form-control bg-white color-6" translate="T.STEP2.COD"></div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-xs-12 cod-detail flex-order-7 payment-detail" collapse="order.paymentInfo.paymentType != PAYMENT_TYPE.COD">
+                              <div ng-if="isPaymentMethodInvalid(PAYMENT_TYPE.COD)" class="method-detail caret-left bg-white w-100 padding-20 rounded clearfix">
+                                <ul class="ul-none-style">
+                                  <li>
+                                    <div class="padding-right-0 padding-bottom-0 padding-top-0 ng-binding">
+                                      <table class="valign-top">
+                                        <tbody>
+                                          <tr>
+                                            <td>
+                                              <div ng-bind-html="messageLimitCodOp"></div>
+                                            </td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  </li>
+                                </ul>
+                              </div>
+                              <div ng-if="!isPaymentMethodInvalid(PAYMENT_TYPE.COD)" class="method-detail caret-left bg-white w-100 padding-20 rounded clearfix">
+                                <ul class="ul-none-style hidden">
+                                  <p class="text-muted" translate="T.STEP2.COD_DESCRIPTION_LINE_1"></p>--&gt; <li>
+                                    <strong>
+                                      <span translate="T.STEP2.DELIVERY_FEE"></span>: <span ng-bind="order.paymentInfo.deliveryInfo.fee | number"></span>
+                                      <span ng-bind="event.currency.isoCode"></span>
+                                    </strong>
+                                  </li>
+                                </ul>
+                                <p class="dashed-line hidden"></p>
+                                <div class="clearfix">
+                                  <div class="wrap type2 wrap-form-address">
+                                    <div class="col-sm-6 padding-left-0 padding-right-0">
+                                      <div class="form-group frm-style relative" ng-class="{&#39;has-error&#39;: submitStep2Clicked &amp;&amp; form.address.$error.required || invalidDeliveryAddress }">
+                                        <label>
+                                          <span translate="T.STEP2.ADDRESS"></span>
+                                          <span class="required-icon">*</span>
+                                        </label>
+                                        <input maxlength="250" tabindex="10" type="text" ng-model="order.paymentInfo.deliveryInfo.address" class="form-control" name="address" ng-required="order.paymentInfo.paymentType == PAYMENT_TYPE.COD">
+                                        <div ng-if="submitStep2Clicked &amp;&amp; form.address.$error.required" class="error-message error-bottom font-085 rounded" translate="T.STEP2.ERROR.ADDRESS_REQUIRED"></div>
+                                      </div>
+                                      <div class="form-group frm-style relative" ng-class="{&#39;has-error&#39;: submitStep2Clicked &amp;&amp; !order.paymentInfo.deliveryInfo.cityId}">
+                                        <label>
+                                          <span translate="T.STEP2.CITY_PROVINCE"></span>
+                                          <span class="required-icon">*</span>
+                                        </label>
+                                        <div class="custome-select clearfix">
+                                          <select tabindex="11" ng-change="selectCity()" ng-model="order.paymentInfo.deliveryInfo.cityId" ng-options="city.id as (city.name) for city in $parent.deliveryCities | orderBy:&#39;displayOrder&#39;" class="form-control rounded w-100" ng-required="order.paymentInfo.paymentType == PAYMENT_TYPE.COD">
+                                            <option disabled=""></option>
+                                          </select>
+                                        </div>
+                                        <div class="error-required-address" ng-if="(isChooseCityFirst ||submitStep2Clicked) &amp;&amp; !order.paymentInfo.deliveryInfo.cityId" translate="T.STEP2.ERROR_REQUIRED_CITY"></div>
+                                      </div>
+                                      <div class="form-group margin-bottom-0 frm-style relative" ng-class="{&#39;has-error&#39;: submitStep2Clicked &amp;&amp; !order.paymentInfo.deliveryInfo.districtId}">
+                                        <div class="wrap-disable-form-group" ng-click="checkCityFirst()" ng-if="!order.paymentInfo.deliveryInfo.cityId"></div>
+                                        <label>
+                                          <span translate="T.STEP2.DISTRICT"></span>
+                                          <span class="required-icon">*</span>
+                                        </label>
+                                        <div class="custome-select clearfix">
+                                          <select tabindex="12" ng-change="selectDistrict()" ng-model="order.paymentInfo.deliveryInfo.districtId" ng-options="district.id as (district.type + &#39; &#39; + district.name) for district in $parent.deliveryDistricts | orderBy:&#39;displayOrder&#39;" class="form-control rounded w-100" ng-required="order.paymentInfo.paymentType == PAYMENT_TYPE.COD">
+                                            <option disabled=""></option>
+                                          </select>
+                                        </div>
+                                        <div class="error-required-address" ng-if="submitStep2Clicked &amp;&amp; !order.paymentInfo.deliveryInfo.districtId" translate="T.STEP2.ERROR_REQUIRED_DISTRICT"></div>
+                                      </div>
+                                      <div class="form-group frm-style relative" ng-class="{&#39;has-error&#39;: submitStep2Clicked &amp;&amp; !order.paymentInfo.deliveryInfo.wardId}">
+                                        <div class="wrap-disable-form-group" ng-click="checkCityFirst()" ng-if="!order.paymentInfo.deliveryInfo.cityId"></div>
+                                        <label>
+                                          <span translate="T.STEP2.WARD"></span>
+                                          <span class="required-icon">*</span>
+                                        </label>
+                                        <div class="custome-select clearfix">
+                                          <select tabindex="12" ng-change="selectWard()" ng-model="order.paymentInfo.deliveryInfo.wardId" ng-options="ward.id as (ward.type + &#39; &#39; + ward.name) for ward in $parent.deliveryWards | orderBy:&#39;displayOrder&#39;" class="form-control rounded w-100" ng-required="order.paymentInfo.paymentType == PAYMENT_TYPE.COD">
+                                            <option disabled=""></option>
+                                          </select>
+                                        </div>
+                                        <div class="error-required-address" ng-if="submitStep2Clicked &amp;&amp; !order.paymentInfo.deliveryInfo.wardId" translate="T.STEP2.ERROR_REQUIRED_WARD"></div>
+                                      </div>
+                                    </div>
+                                    <div class="col-sm-6 padding-left-0 padding-right-0">
+                                      <div class="form-group margin-bottom-0 frm-style">
+                                        <label translate="T.STEP2.NOTE"></label>
+                                        <textarea maxlength="1000" tabindex="13" class="form-control" id="cod-note-input" ng-model="order.paymentInfo.deliveryInfo.note"></textarea>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="delivery-option clearfix">
+                                  <div class="col-sm-6" ng-click="selectDeliveryType(DELIVERY_TYPE.Normal)" ng-class="{&#39;active&#39;: order.paymentInfo.deliveryInfo.deliveryType == DELIVERY_TYPE.Normal || !order.paymentInfo.deliveryInfo.deliveryType}">
+                                    <div class="custom-radio">
+                                      <div class="radio-wrapper">
+                                        <div class="radio-inner"></div>
+                                      </div>
+                                      <div class="green-dot"></div>
+                                    </div>
+                                    <div class="des">
+                                      <strong>
+                                        <span translate="T.STEP2.DELIVERY_OPTION.NORMAL"></span>
+                                      </strong>
+                                      <br>
+                                      <span translate="T.STEP2.DELIVERY_MESS.FEE"></span>: <span ng-bind="order.paymentInfo.deliveryInfo.fee | number"></span>
+                                      <span ng-bind="event.currency.isoCode"></span>
+                                    </div>
+                                  </div>
+                                  <div class="col-sm-6" ng-click="selectDeliveryType(DELIVERY_TYPE.Fast)" ng-class="{&#39;active&#39;: order.paymentInfo.deliveryInfo.deliveryType == DELIVERY_TYPE.Fast}" ng-show="isAllowFastDelivery">
+                                    <div class="custom-radio">
+                                      <div class="radio-wrapper">
+                                        <div class="radio-inner"></div>
+                                      </div>
+                                      <div class="green-dot"></div>
+                                    </div>
+                                    <div class="des">
+                                      <strong>
+                                        <span translate="T.STEP2.DELIVERY_OPTION.FAST"></span>
+                                        <img class="tag_new" src="./static.ticketbox.vn_dist-canary-bp_tkbvn_html_spa_ticket-booking_views_step2.html_4349_files/tag_new.png&#39;}}">
+                                      </strong>
+                                      <span class="inline-block ello-info-circled-1 color-c font-600" tooltip-html-unsafe="{{fastDeliveryTooltip()}}" tooltip-trigger="mouseenter"></span>
+                                      <br>
+                                      <span translate="T.STEP2.DELIVERY_MESS.FEE"></span>: <span ng-bind="fastDeliveryFee | number"></span>
+                                      <span ng-bind="event.currency.isoCode"></span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div tabindex="8" class="payment-method pickup flex-order-6 col-sm-6 form-group unactive" ng-click="selectPaymentType(PAYMENT_TYPE.OfficePickup)" ng-class="{&#39;active&#39;: order.paymentInfo.paymentType == PAYMENT_TYPE.OfficePickup, &#39;disabled&#39;: !event.paymentMethods.officePickup}" ng-if="(event.id != 19842 &amp;&amp; checkExistPaymentType(PAYMENT_TYPE.OfficePickup)) || event.paymentMethods.officePickup">
+                              <div class="wrapper">
+                                <div tooltip-html-unsafe="&lt;div class=&#39;warning-tooltip custome-tooltip padding-10 rounded color-6&#39;&gt;&lt;table class=&#39;w-100&#39;&gt;&lt;tbody class=&#39;w-100&#39;&gt;&lt;tr&gt;&lt;td width=&#39;20&#39;&gt;&lt;i class=&#39;ello-attention&#39;&gt;&lt;/i&gt;&lt;/td&gt;&lt;td&gt;{{&#39;T.STEP2.OFFICE_PICKUP_DISABLED_MESSAGE&#39; | translate}}&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;" tooltip-trigger="mouseenter" class="base-warning-tooltip input-group font-600">
+                                  <div class="input-group-addon relative h-100">
+                                    <div class="custom-radio">
+                                      <div class="radio-wrapper">
+                                        <div class="radio-inner"></div>
+                                      </div>
+                                      <div class="green-dot"></div>
+                                    </div>
+                                    <span>
+                                      <img class="icon-png" ng-src="{{staticDomain + &#39;/site/global/content/img/booking/calculator.png&#39;}}">
+                                    </span>
+                                  </div>
+                                  <div class="form-control bg-white color-6" translate="T.STEP2.OFFICE_PICKUP"></div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-xs-12 pickup-detail flex-order-8" collapse="order.paymentInfo.paymentType != PAYMENT_TYPE.OfficePickup">
+                              <div ng-if="isPaymentMethodInvalid(PAYMENT_TYPE.OfficePickup)" class="method-detail caret-right bg-white w-100 padding-20 rounded clearfix">
+                                <ul class="ul-none-style">
+                                  <li>
+                                    <div class="padding-right-0 padding-bottom-0 padding-top-0 ng-binding">
+                                      <table class="valign-top">
+                                        <tbody>
+                                          <tr>
+                                            <td>
+                                              <div ng-bind-html="messageLimitCodOp"></div>
+                                            </td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  </li>
+                                </ul>
+                              </div>
+                              <div ng-if="!isPaymentMethodInvalid(PAYMENT_TYPE.OfficePickup)" class="method-detail caret-right bg-white w-100 padding-20 rounded clearfix">
+                                <ul class="ul-none-style">
+                                  <li>
+                                    <span translate="T.STEP2.OFFICE_PICKUP_LOCATION"></span>
+                                    <div class="radio" ng-repeat="o in offices">
+                                      <label>
+                                        <span ng-if="currentLangKey == &#39;vi&#39;">
+                                          <span translate="T.STEP2.OFFICE"></span> {{o.name}}: </span>
+                                        <span ng-if="currentLangKey == &#39;en&#39;">{{o.name}}
+                                          <span translate="T.STEP2.OFFICE"></span>: </span>
+                                        <span>{{currentLangKey == 'vi' ? o.addressVi : o.addressEn }}</span>
+                                      </label>
+                                      <div class="padding-20 padding-right-0 padding-bottom-0 padding-top-0">
+                                        <span translate="T.STEP2.OFFICE_WORK_TIME"></span> ({{o.startTime}} - {{o.endTime}})
+                                      </div>
+                                    </div>
+                                  </li>
+                                </ul>
+                                <p class="dashed-line"></p>
+                                <div class="frm-style relative">
+                                  <label translate="T.STEP2.NOTE"></label>
+                                  <textarea maxlength="1000" class="form-control" ng-model="order.paymentInfo.officePickupInfo.note"></textarea>
+                                </div>
+                              </div>
+                            </div>
+                            <div ng-if="false &amp;&amp; checkExistPaymentType(PAYMENT_TYPE.Payoo)" tabindex="14" class="payment-method payoo flex-order-9 col-sm-6 form-group" ng-click="selectPaymentType(PAYMENT_TYPE.Payoo)" ng-class="{&#39;active&#39;: order.paymentInfo.paymentType == PAYMENT_TYPE.Payoo, &#39;disabled&#39;: !event.paymentMethods.payoo || checkPayooDisable() }">
+                              <div class="wrapper">
+                                <div tooltip-html-unsafe="&lt;div class=&#39;warning-tooltip custome-tooltip padding-10 rounded color-6&#39;&gt;&lt;table class=&#39;w-100&#39;&gt;&lt;tbody class=&#39;w-100&#39;&gt;&lt;tr&gt;&lt;td width=&#39;20&#39;&gt;&lt;i class=&#39;ello-attention&#39;&gt;&lt;/i&gt;&lt;/td&gt;&lt;td&gt;{{&#39;T.STEP2.OPTION_NOT_AVAILABLE_FOR_THIS_EVENT&#39; | translate}}&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;" tooltip-trigger="mouseenter" class="base-warning-tooltip input-group font-600">
+                                  <div class="input-group-addon custom-radio relative h-100">
+                                    <div class="radio-wrapper">
+                                      <div class="radio-inner"></div>
+                                    </div>
+                                    <div class="green-dot"></div>
+                                    <span class="otc-gray booking-sprites"></span>
+                                  </div>
+                                  <div class="form-control bg-white color-6" translate="T.LAYOUT.OVER_THE_COUNTER_PAYMENT"></div>
+                                </div>
+                              </div>
+                            </div>
+                            <div ng-if="false" class="col-xs-12 payoo-detail flex-order-11 payment-detail" collapse="order.paymentInfo.paymentType != PAYMENT_TYPE.Payoo">
+                              <div class="method-detail caret-left bg-white w-100 padding-20 rounded clearfix">
+                                <p translate="T.STEP2.OVER_THE_COUNTER.PAYOO.DESCRIPTION"></p>
+                                <p class="dashed-line"></p>
+                                <div class="rounded otc-steps relative step2 text-center">
+                                  <div class="padding-15 overflow-hidden">
+                                    <img class="w-100 delivery-img hidden-xs" ng-src="{{staticDomain + &#39;/site/global/content/img/booking/payoo_desktop.jpg&#39;}}">
+                                    <img class="w-100 delivery-img visible-xs" ng-src="{{staticDomain + &#39;/site/global/content/img/booking/payoo_mobile.jpg&#39;}}">
+                                  </div>
+                                </div>
+                                <div class="padding-10"></div>
+                                <p>
+                                  <span translate="T.STEP2.OVER_THE_COUNTER.PAYOO.VIEW_MAP"></span>&nbsp; <a href="https://payoo.vn/map/public/?verify=true" target="_blank" class="underline font-600" translate="T.STEP2.OVER_THE_COUNTER.HERE"></a>
+                                </p>
+                                <span translate="T.STEP2.OVER_THE_COUNTER.BEFORE"></span>
+                                <b ng-bind="order.paymentInfo.payooInfo.expireDate | date:&#39;EEEE, d MMMM yyyy, h:mm a&#39;"></b>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div ng-class="{&#39;col-xs-12&#39;: isWidget, &#39;col-md-4&#39; : !isWidget }" class="overflow-hidden booking-right-bar">
+                <tkb-booking-bill></tkb-booking-bill>
+                <div class="padding-10 padding-left-0 padding-right-0 text-center hidden-sm color-6 font-085" ng-if="!isMobile &amp;&amp; !isWidget">
+                  <i translate="T.STEP2.PLEASE_CHECK_BEFORE_SUBMIT"></i>
+                </div>
+                <div ng-if="order != null &amp;&amp; !(reviewingOrder &amp;&amp; (isWidget || isMobile))" show-checkout="" class="checkout-section center-block table margin-bottom-0 valign-middle" ng-class="{&#39;checkout-section-wg font-size-14&#39;: isWidget}">
+                  <div class="table-cell w-50 prev-block">
+                    <a ng-click="goToSelectTicketsStep()" class="font-600 color-6 underline" translate="T.STEP2.BACK"></a>
+                  </div>
+                  <div class="table-cell next-block">
+                    <table ng-disabled="isDisabledSubmitBtn()" ng-if="!isMobile &amp;&amp; !isWidget" ng-click="submitOrder()" ng-class="{&#39;table-cell pull-right&#39;: isWidget, &#39;big-btn&#39;: !isWidget &amp;&amp; !isMobile}" class="btn-rounded btn-next tkb-bg-color btn btn-primary center-block text-shadow-2 font-bold">
+                      <tbody>
+                        <tr>
+                          <td ladda="submitting" data-style="zoom-out">
+                            <span ng-if="order.paymentInfo.paymentType == PAYMENT_TYPE.CreditCard || order.paymentInfo.paymentType == PAYMENT_TYPE.ATM || order.paymentInfo.paymentType == PAYMENT_TYPE.Omise || order.paymentInfo.paymentType == PAYMENT_TYPE.Cybersource || order.paymentInfo.paymentType == PAYMENT_TYPE.InternetBanking">{{'T.STEP2.PROCESS_PAYMENT' | translate}}</span>
+                            <span ng-if="!order.paymentInfo.paymentType || order.paymentInfo.paymentType == PAYMENT_TYPE.Payoo || order.paymentInfo.paymentType == PAYMENT_TYPE.Free || order.paymentInfo.paymentType == PAYMENT_TYPE.COD || order.paymentInfo.paymentType == PAYMENT_TYPE.OfficePickup || order.paymentInfo.paymentType == PAYMENT_TYPE.BankTransfer || order.paymentInfo.paymentType == PAYMENT_TYPE.Moca || order.paymentInfo.paymentType == PAYMENT_TYPE.Momo">{{'T.STEP2.SUBMIT' | translate}}</span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <table ng-disabled="isDisabledSubmitBtn()" ng-if="isMobile" ng-click="reviewOrder()" ng-class="{&#39;table-cell pull-right&#39;: isWidget, &#39;big-btn w-300&#39;: !isWidget &amp;&amp; !isMobile}" class="btn icon-after btn-rounded btn-next tkb-bg-color btn btn-primary center-block text-shadow-2 font-800">
+                      <tbody>
+                        <tr>
+                          <td ladda="submitting" data-style="zoom-out">
+                            <span>{{'T.STEP2.NEXT' | translate}}</span>
+                          </td>
+                          <td>
+                            <span class="ello-play-2 tkb-dark-color"></span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <table ng-disabled="isDisabledSubmitBtn()" ng-if="isWidget" ng-click="reviewOrder()" ng-class="{&#39;table-cell pull-right&#39;: isWidget, &#39;big-btn w-300&#39;: !isWidget &amp;&amp; !isMobile}" class="btn icon-after btn-rounded btn-next tkb-bg-color btn btn-primary center-block text-shadow-2 font-800">
+                      <tbody>
+                        <tr>
+                          <td ladda="submitting" data-style="zoom-out">
+                            <span translate="T.STEP2.NEXT" ng-class="{&#39;padding-20 padding-top-0 padding-bottom-0&#39;: isWidget}"></span>
+                          </td>
+                          <td>
+                            <span class="ello-play-2 tkb-dark-color"></span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div id="modal-payment-momo" ng-if="isOpenModalMomo">
+      <div class="modal-backdrop">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="group-payment-method-name">
+              <span>
+                <img class="payment-method-icon" ng-src="{{staticDomain + &#39;/site/global/content/img/booking/momo.png&#39;}}">
+              </span>
+               <span class="payment-method-text" translate="T.STEP2.MODAL_MOMO.TITLE_PAYMENT_METHOD"></span> 
+              <!--<span class="payment-method-text" translate="T.LAYOUT.BANK_TRANSFER_PAYMENT"></span>-->
+            </div>
+            <span class="change-payment-method" ng-click="toggleOpenModalMomo()" translate="T.STEP2.MODAL_MOMO.CHANGE_PAYMENT_METHOD"></span>
+          </div>
+          <div class="modal-body">
+            <div class="d-desk-flex">
+              <div class="group-img-qr-code">
+                <div class="img-qr-code">
+                  <!-- <canvas id="qrcode"></canvas> -->
+                  <img id="qrcode" />
+                </div>
+                <div class="total">
+                  <span translate="T.STEP2.MODAL_MOMO.TOTAL"></span>
+                  <span class="price">
+                    <span ng-bind="finalAmountFromApi"></span>
+                  </span>
+                </div>
+              </div>
+              <div class="notes-payment-momo">
+                <div>
+                  <div class="notes-title" translate="T.STEP2.MODAL_MOMO.SCAN_QR"></div>
+                  <ul class="notes-list">
+                    <li>
+                      <div class="index-note">1</div>
+                      <span>
+                        <span translate="T.STEP2.MODAL_MOMO.NOTE_1.SUB_1"></span>&nbsp; <span class="font-weight-600">Ứng dụng momo</span>&nbsp; <span translate="T.STEP2.MODAL_MOMO.NOTE_1.SUB_3"></span>
+                      </span>
+                    </li>
+                    <li>
+                      <div class="index-note">2</div>
+                      <div>
+                        <span>Chọn biểu tượng </span>
+                        <img ng-src="{{staticDomain + &#39;/site/global/content/img/scan.png&#39;}}">
+                        <span class="font-weight-600" translate="T.STEP2.MODAL_MOMO.NOTE_2.SUB_2"></span>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="index-note">3</div>
+                      <span>
+                      <span translate="T.STEP2.MODAL_MOMO.NOTE_3"></span><br>
+                      <span>Nội dung chuyển khoản</span>&nbsp; <span class="font-weight-600">ticketbox 275678</span>
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+                <div id="ten-countdown">
+                  <div translate="T.STEP2.MODAL_MOMO.TITLE_COUNTDOWN"></div>
+                  <div class="countdown-value">
+                    <div id="minutes-value">10</div>
+                    <span>&nbsp;:&nbsp;</span>
+                    <div id="seconds-value">00</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

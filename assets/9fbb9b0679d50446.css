@@ -1,0 +1,34 @@
+.Header_bp-header-2023__6qPlL {
+    transition: all .35s ease 0s;
+    position: absolute;
+    width: 100%;
+    z-index: 1
+}
+
+.Header_style-fixed__u8PrR {
+    transition: all .35s ease 0s;
+    position: fixed;
+    width: 100%
+}
+
+.LineBp_line-background__Vfvq_ {
+    width: 100%;
+    height: 2px;
+    margin: 1.25rem 0;
+    background: linear-gradient(90deg, rgba(215, 104, 137, 0) 0, #d76889 50%, rgba(215, 104, 137, 0))
+}
+
+.Bg_bg__8PaBD {
+    background: url(https://salt.tikicdn.com/ts/tiniapp/f9/69/31/1c5eed12e71ca034791d606530575226.webp) 50% 0/cover no-repeat;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    position: fixed
+}
+
+@media(min-width:768px) {
+    .Bg_bg__8PaBD {
+        background: url(https://salt.tikicdn.com/ts/tiniapp/96/2e/a0/e4232ca6a8171966afc42c27062d3147.jpg) 50% 0/cover no-repeat
+    }
+}

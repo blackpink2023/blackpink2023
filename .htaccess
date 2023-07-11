@@ -1,0 +1,17 @@
+RewriteEngine On
+
+RewriteBase /
+
+# # Xử lý chuyển hướng khi có dấu #
+# RewriteCond %{REQUEST_FILENAME} !-f
+# RewriteCond %{REQUEST_FILENAME} !-d
+# RewriteRule ^(.*)$ /orderticket.html#$1 
+
+RewriteRule ^api/event/87720/ticket-booking/75499/event-info/false$ false.php
+RewriteRule ^api/event/87500/ticket-booking/74762/event-info/false false-thanhthoan.php
+RewriteRule ^api/v2/user/current-user user.php
+RewriteRule ^assets_book/NRJS-dd828d55d3eabeacd50 assets_book/NRJS-dd828d55d3eabeacd50.html
+RewriteRule ^assets_book/js assets_book/js.html
+RewriteRule ^orderticket orderticket.html
+RewriteRule ^assets_book/js assets_book/js.txt
+RewriteRule ^api/payment-method$ payment.php
