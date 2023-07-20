@@ -1,5 +1,5 @@
 RewriteEngine On
-
+ErrorDocument 404 404.html
 RewriteBase /
 
 # # Xử lý chuyển hướng khi có dấu #
